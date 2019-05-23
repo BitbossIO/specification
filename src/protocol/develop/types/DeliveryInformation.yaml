@@ -1,0 +1,145 @@
+metadata:
+  name: DeliveryInformation
+  label: Delivery Information
+  description: "Address and details for item delivery."
+
+fields:
+  - name: Line1
+    label: Line 1
+    description: "Delivery Address Line 1"
+    type: varchar
+    # varchar size is number of bits to serialize the size of the value
+    size: 8
+    UBLEquivalent: cac:Delivery / cac:DeliveryAddress / cbc:StreetName & cbc:BuildingNumber
+    XMLSchema: xsd:string
+    X12Equivalent: N301
+    X12Comment:
+    EDIFACTEquivalent: 
+    EDIFACTComment: 
+    example: "1 Fernway Drive"
+    notes: ""
+
+  - name: Line2
+    label: Line 2
+    description: "Delivery Address Line 2"
+    type: varchar
+    # varchar size is number of bits to serialize the size of the value
+    size: 8
+    UBLEquivalent: cac:Delivery / cac:DeliveryAddress / cbc:BuildingName
+    XMLSchema: xsd:string
+    X12Equivalent: N302
+    X12Comment: Note - All Delivery & BuyerCustomerParty (UBL) info needs to be constructed in separate N1 loops for X12
+    EDIFACTEquivalent: 
+    EDIFACTComment: 
+    example: "Apex Building"
+    notes: ""
+
+  - name: Line3
+    label: Line 3
+    description: "Delivery Address Line 3"
+    type: varchar
+    # varchar size is number of bits to serialize the size of the value
+    size: 8
+    UBLEquivalent: cac:Delivery / cac:DeliveryAddress / cac:AddressLine
+    XMLSchema: xsd:string
+    X12Equivalent: N302
+    X12Comment: Note - All Delivery & BuyerCustomerParty (UBL) info needs to be constructed in separate N1 loops for X12
+    EDIFACTEquivalent: 
+    EDIFACTComment: 
+    example: "1 Fernway Drive"
+    notes: ""
+
+  - name: DeliveryCity
+    label: Delivery City
+    description: "City / Town Name"
+    type: varchar
+    # varchar size is number of bits to serialize the size of the value
+    size: 8
+    UBLEquivalent: cac:Delivery / cac:DeliveryAddress / cbc:CityName 
+    XMLSchema: xsd:string
+    X12Equivalent: N401
+    X12Comment: Note - All Delivery & BuyerCustomerParty (UBL) info needs to be constructed in separate N1 loops for X12
+    EDIFACTEquivalent: 
+    EDIFACTComment: 
+    example: "Boston"
+    notes: ""
+
+  - name: DeliveryStateProvince
+    label: Delivery State Province
+    description: "2 letter ISO State / Province Code"
+    type: fixedchar
+    size: 2
+    UBLEquivalent: cac:Delivery / cac:DeliveryAddress / cbc:CountrySubentityCode
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: N402
+    X12Comment: Note - All Delivery & BuyerCustomerParty (UBL) info needs to be constructed in separate N1 loops for X12
+    EDIFACTEquivalent: 
+    EDIFACTComment: 
+    example: "MA"
+    notes: ""
+
+  - name: DeliveryPostalCode
+    label: Delivery Postal Code
+    description: "Postal Code"
+    type: varchar
+    # varchar size is number of bits to serialize the size of the value
+    size: 8
+    UBLEquivalent: cac:Delivery / cac:DeliveryAddress / cbc:PostalZone
+    XMLSchema: xsd:string
+    X12Equivalent: N403
+    X12Comment:
+    EDIFACTEquivalent: 
+    EDIFACTComment: 
+    example: "12782"
+    notes: ""
+
+  - name: DeliveryCountry
+    label: Delivery Country
+    description: "Country"
+    type: fixedchar
+    size: 2
+    UBLEquivalent: cac:Delivery / cac:DeliveryAddress / cac:Country / cbc:IdentificationCode & cac:DestinationCountry / cbc:IdentificationCode
+    XMLSchema: xsd:string
+    X12Equivalent: N404
+    X12Comment:
+    EDIFACTEquivalent: 
+    EDIFACTComment: 
+    example: "US"
+    notes: ""
+
+  - name: RequestedDeliveryStartDateTime
+    label: Requested Delivery Start Date Time
+    description: "Supplier Requested Delivery Window Start"
+    type: Timestamp
+    UBLEquivalent: cac:Delivery / cac:RequestedDeliveryPeriod / cbc:StartDate & cbc:StartTime
+    XMLSchema: xsd:date & xsd:time
+    X12Equivalent: 
+    X12Comment: 
+    EDIFACTEquivalent: 
+    EDIFACTComment: 
+
+  - name: RequestedDeliveryEndDateTime
+    label: Requested Delivery Start Date Time
+    description: "Supplier Requested Delivery Window Start"
+    type: Timestamp
+    UBLEquivalent: cac:Delivery / cac:RequestedDeliveryPeriod / cbc:EndDate & cbc:EndTime
+    XMLSchema: xsd:date & xsd:time
+    X12Equivalent: LDT04
+    X12Comment: Requires LDT01 to Qualify "AF" (From Date of PO Receipt to Delivery)
+    EDIFACTEquivalent: 
+    EDIFACTComment: 
+
+  - name: DeliveryIncentivesPenalties
+    label: Delivery Incentives & Penalties
+    description: "Free form area for any delivery incentives or penalities"
+    type: varchar
+    # varchar size is number of bits to serialize the size of the value
+    size: 16
+    UBLEquivalent: cac:DeliveryTerms / cbc:SpecialTerms
+    XMLSchema: xsd:string
+    X12Equivalent: ITD12
+    X12Comment: Approx Match -- ITD used for Terms of Sale (Discount / Premium on Actual vs Expected Shipment Period)
+    EDIFACTEquivalent: 
+    EDIFACTComment: 
+    example: "5% Price deduction per week for late delivery"
+    notes: ""

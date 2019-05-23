@@ -1,0 +1,229 @@
+metadata:
+  name: PaymentDetails
+  label: Payment Details
+  description: "Supplier's payment details."
+
+fields:
+  - name: PaymentMethod
+    label: Payment Method
+    description: "As Defined by UN/ECE 4461, 62 = P-note endorsed by Bank"
+    type: fixedchar
+    size: 3
+    UBLEquivalent: cac:PaymentMeans / cbc:PaymentMeansCode
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: 
+    X12Comment: Recommend using MTX to capture UBL PaymentMeans Data elements
+    EDIFACTEquivalent: 
+
+  - name: SupplierReceivingAccount
+    label: Supplier Receiving Account
+    description: "Supplier's (Bank) Account Number "
+    type: varchar
+    size: 8
+    UBLEquivalent: cac:PaymentMeans / cac:PayeeFinancialAccount / cbc:ID
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: 
+    EDIFACTEquivalent: 
+
+  - name: AccountName
+    label: Account Name
+    description: "Official Account Name"
+    type: varchar
+    size: 8
+    UBLEquivalent: cac:PaymentMeans / cac:PayeeFinancialAccount / cbc:Name
+    XMLSchema: xsd:string
+    X12Equivalent: 
+    EDIFACTEquivalent: 
+
+  - name: FinancialInstitutionBICCode
+    label: Financial Institution BIC Code
+    description: "ISO 9362 Based BIC or SWIFT Code for Banks"
+    type: varchar
+    size: 8
+    UBLEquivalent: cac:PaymentMeans / cac:PayeeFinancialAccount /  cac:FinancialInstituionBranch / cbc:ID
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: 
+    EDIFACTEquivalent: 
+
+  - name: AccountCurrencyCode
+    label: Account Currency Code
+    description: "Currency of the Financial Account (if Multi-ccy, leave blank)"
+    type: fixedchar
+    size: 3
+    UBLEquivalent: cac:PaymentMeans / cac:PayeeFinancialAccount / cbc:CurrencyCode
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: 
+    EDIFACTEquivalent: 
+
+  - name: FinancialInstitutionBranchName
+    label: Financial Institution Branch Name
+    description: "Branch and Bank Name"
+    type: varchar
+    size: 16
+    UBLEquivalent: ccac:PaymentMeans / cac:PayeeFinancialAccount /  cac:FinancialInstituionBranch / cbc:Name
+    XMLSchema: xsd:string
+    X12Equivalent: 
+    EDIFACTEquivalent: 
+
+  - name: FinancialInstitutionAddress1
+    label: Financial Institution Address 1
+    description: "Street Name & Number"
+    type: varchar
+    # varchar size is number of bits to serialize the size of the value
+    size: 8
+    UBLEquivalent: cac:PaymentMeans / cac:PayeeFinancialAccount /  cac:FinancialInstituionBranch / cac:Address / cbc:StreetName & cbc:BuildingNumber
+    XMLSchema: xsd:string
+    X12Equivalent: N301
+    X12Comment:
+    EDIFACTEquivalent: 
+    EDIFACTComment: 
+    example: "1 Fernway Drive"
+    notes: ""
+
+  - name: FinancialInstitutionAddress2
+    label: Financial Institution Address 2
+    description: "Building Name"
+    type: varchar
+    # varchar size is number of bits to serialize the size of the value
+    size: 8
+    UBLEquivalent: cac:PaymentMeans / cac:PayeeFinancialAccount /  cac:FinancialInstituionBranch / cac:Address /  cbc:BuildingName
+    XMLSchema: xsd:string
+    X12Equivalent: 
+    EDIFACTEquivalent: 
+
+  - name: FinancialInstitutionAddress3
+    label: Financial Institution Address 3
+    description: "Unit Number"
+    type: varchar
+    # varchar size is number of bits to serialize the size of the value
+    size: 8
+    UBLEquivalent: cac:PaymentMeans / cac:PayeeFinancialAccount /  cac:FinancialInstituionBranch / cac:Address /  cac:AddressLine 
+    XMLSchema: xsd:string
+    X12Equivalent: 
+    EDIFACTEquivalent: 
+
+  - name: FinancialInstitutionCity
+    label: Financial Institution City
+    description: "City / Town Name"
+    type: varchar
+    # varchar size is number of bits to serialize the size of the value
+    size: 8
+    UBLEquivalent: cac:PaymentMeans / cac:PayeeFinancialAccount /  cac:FinancialInstituionBranch / cac:Address /  cbc:CityName 
+    XMLSchema: xsd:string
+    X12Equivalent: 
+    EDIFACTEquivalent: 
+
+  - name: FinancialInstitutionStateProvince
+    label: Financial Institution State Province
+    description: "2 letter ISO State / Province Code"
+    type: fixedchar
+    size: 2
+    UBLEquivalent: cac:PaymentMeans / cac:PayeeFinancialAccount /  cac:FinancialInstituionBranch / cac:Address /  cbc:CountrySubentityCode
+    XMLSchema: xsd:normalizedString
+    X12Equivalent:
+    EDIFACTEquivalent: 
+
+  - name: FinancialInstitutionPostalCode
+    label: Financial Institution Postal Code
+    description: "Postal Code"
+    type: varchar
+    # varchar size is number of bits to serialize the size of the value
+    size: 8
+    UBLEquivalent: cac:PaymentMeans / cac:PayeeFinancialAccount /  cac:FinancialInstituionBranch / cac:Address /  cbc:PostalZone
+    XMLSchema: xsd:string
+    X12Equivalent: 
+    EDIFACTEquivalent: 
+
+  - name: FinancialInstitutionCountry
+    label: Financial Institution Country
+    description: "2-letter ISO Code (also can be used as Destination Country for Customs purposes)"
+    type: fixedchar
+    size: 2
+    UBLEquivalent: cac:PaymentMeans / cac:PayeeFinancialAccount /  cac:FinancialInstituionBranch / cac:Address /  cac:Country / cbc:IdentificationCode & cac:DestinationCountry / cbc:IdentificationCode
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: 
+    EDIFACTEquivalent: 
+
+  - name: TransactionConditions
+    label: Transaction Conditions
+    description: "Free Form Description that is a part of the Quote Conditions"
+    type: varchar
+    # varchar size is number of bits to serialize the size of the value
+    size: 8
+    UBLEquivalent: cac:TransactionConditions / cbc:Description
+    XMLSchema: xsd:string
+    X12Equivalent: 
+    EDIFACTEquivalent: 
+
+  - name: ChargeDiscountIndicator
+    label: Charge / Discount Indicator
+    description: "True (Charge, 1) or False (Discount, 0)"
+    type: uint
+    size: 8
+    UBLEquivalent: cac:AllowanceCharge / cbc:ChargeIndicator
+    XMLSchema: xsd:boolean
+    X12Equivalent: SAC01
+    EDIFACTEquivalent: 
+
+  - name: ChargeDiscountReason
+    label: Charge / Discount Reason
+    description: "Reason for the Allowance or Charge (Free Form)"
+    type: varchar
+    # varchar size is number of bits to serialize the size of the value
+    size: 8
+    UBLEquivalent: cac:AllowanceCharge / cbc:AllowanceChargeReason
+    XMLSchema: xsd:string
+    X12Equivalent: SAC15
+    EDIFACTEquivalent: 
+
+  - name: ChargeDiscountAmount
+    label: Charge / Discount Amount
+    description: "Monetary Amount of Allowance or Charge (assumed to be same as Settlement Currency)"
+    type: float
+    # varchar size is number of bits to serialize the size of the value
+    size: 32
+    UBLEquivalent: cac:AllowanceCharge / cbc:Amount
+    XMLSchema: xsd:decimal
+    X12Equivalent: SAC05
+    EDIFACTEquivalent: 
+
+  - name: TaxableAmount
+    label: Taxable Amount
+    description: "Total Taxble Amount (Monetary Value of all Line Items)"
+    type: float
+    size: 32
+    UBLEquivalent: cac:TaxTotal / cac:TaxTSubtotal / cbc:TaxableAmount
+    XMLSchema: xsd:decimal
+    X12Equivalent: AMT02
+    X12Comment: Requires AMT01 to Qualify Total Monetary Amount
+    EDIFACTEquivalent: 
+
+  - name: TaxAmount
+    label: Tax Amount
+    description: "Tax Payable Amount (these amounts are in the Pricing / Document Ccy)"
+    type: float
+    size: 32
+    UBLEquivalent: cac:TaxTotal / cac:TaxTSubtotal / cbc:TaxAmount
+    XMLSchema: xsd:decimal
+    X12Equivalent: 
+    EDIFACTEquivalent: 
+
+  - name: TaxScheme
+    label: Tax Scheme
+    description: "Name of Tax Applied"
+    type: varchar
+    size: 8
+    UBLEquivalent: cac:TaxTotal / cac:TaxTSubtotal / cac:TaxCategory  /  cac:TaxScheme / cbc:Name
+    XMLSchema: xsd:string
+    X12Equivalent: 
+    EDIFACTEquivalent: 
+
+  - name: TotalPayableAmount
+    label: Total Payable Amount
+    description: "Total Monetary Amount Payable"
+    type: float
+    size: 32
+    UBLEquivalent: cac:QuotedMonetaryTotal / cbc:PayableAmount
+    XMLSchema: xsd:decimal
+    X12Equivalent: 
+    EDIFACTEquivalent: 

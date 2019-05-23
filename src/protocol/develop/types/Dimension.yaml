@@ -1,0 +1,40 @@
+metadata:
+  name: Dimension
+  label: Dimension
+  description: "A dimensional measurement including units."
+
+fields:
+  - name: Attribute
+    label: Attribute
+    description: "Dimension Attribute Name."
+    type: varchar
+    size: 8
+    UBLEquivalent: cac:CatalogueLine |cbc:ID 1 | cac:Item / cac:Dimension / cbc:AttributeID
+    XMLSchema: xsd:normalisedString
+    X12Equivalent: N/A
+    X12Comment: Unit of Measurement (PO413) only needs to be specified once for H/W/L Dimensions. X12 has dedicated fields for H/W/L so Attribute ID not required
+    EDIFACTEquivalent:
+    example: "Height"
+    notes: ""
+
+  - name: UnitOfMeasurement
+    label: Unit Of Measurement
+    description: "Dimension / Unit of Measurement"
+    type: varchar
+    size: 8
+    UBLEquivalent: cac:CatalogueLine |cbc:ID 1 | cac:Item / cac:Dimension / cbc:Measure unitCode= qualifier
+    XMLSchema: xsd:normalisedString
+    X12Equivalent: PO413*
+    X12Comment: Unit of Measurement (PO413) only needs to be specified once for H/W/L Dimensions. X12 has dedicated fields for H/W/L so Attribute ID not required
+    EDIFACTEquivalent:
+
+  - name: Value
+    label: Value
+    description: "Dimension / Value"
+    type: Float
+    size: 32
+    UBLEquivalent: cac:CatalogueLine |cbc:ID 1 | cac:Item / cac:Dimension / cbc:Measure
+    XMLSchema: xsd:decimal
+    X12Equivalent: PO411
+    X12Comment: Unit of Measurement (PO413) only needs to be specified once for H/W/L Dimensions. X12 has dedicated fields for H/W/L so Attribute ID not required
+    EDIFACTEquivalent:

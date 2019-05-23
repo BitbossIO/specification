@@ -1,0 +1,204 @@
+#
+# "Price/Sales Catalog Request
+#
+
+code: E001
+
+metadata:
+  name: RequestForQuote
+  label: Request for Quote
+  description: "Used in general retail to obtain supplier item information and load to their Item master file  for new good, item updates or discontinued product notification"
+
+fields:
+  - name: Version
+    label: Version
+    type: uint 
+    description: Payload Version
+    size: 1
+    example: 0
+    computed: true
+
+  - name: EDIDataType
+    label: EDI Data Type
+    description: "Supported values: 1 - EDIFACT (QUOTES). 2 - X12 (843). 3 - UBL (Quotation)."
+    type: uint
+    size: 1
+    int_values:
+      - 1
+      - 2
+      - 3
+    example_hex: 01
+    example: "1"
+
+  - name: VersionID
+    label: Version ID
+    description: Version of Language
+    type: varchar
+    size: 32
+    UBLEquivalent: ext:UBLVersionID
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: BCT03
+    EDIFACTEquivalent: UNH / 0054
+    example: "2.3.3.A"
+
+  - name: ProfileID
+    label: Profile ID
+    type: varchar
+    description: Catalogue Version Number
+    size: 32
+    UBLEquivalent: cbc:ProfileID
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: 
+    EDIFACTEquivalent:
+    example: "900000022"
+
+  - name: ID
+    label: ID
+    type: varchar
+    description: Catalogue Request ID Number assigned by Requestor
+    size: 32
+    UBLEquivalent: cbc:ID
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: BCT02
+    EDIFACTEquivalent:
+    example: "900000022"
+
+  - name: CopyIndicator
+    label: Copy Indicator
+    description: "UBL/EDIFACT: True (1) / False (0)."
+    type: bool
+    example_hex: 01
+    UBLEquivalent: cbc:CopyIndicator
+    XMLSchema: xsd:boolean
+    X12Equivalent: BCT10
+    X12Comment:
+    EDIFACTEquivalent:
+    example: "00"
+
+  - name: UUID
+    label: Universally Unique Identifier
+    description: "Universal Catalogue Request Reference # - 2 Char Prefix for doc type followed by randomly generated base58 string. Each UUID should be unique."
+    type: fixedchar
+    size: 34
+    UBLEquivalent: cbc:UUID
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: 
+    EDIFACTEquivalent:
+    example: "RQapm2qsznhks23z8d83u41s8019hyri3i"
+    notes: ""
+
+  - name: IssuanceTimestamp
+    label: Issuance Timestamp
+    description: "Timestamp in nanoseconds of when the catalog was issued."
+    type: Timestamp
+    UBLEquivalent: cbc:IssueDate/cbc:IssueTime
+    XMLSchema: xsd:date/xsd:time
+    X12Equivalent: DTM02
+    X12Comment: "DTM01 to qualify 007 & DTM05 to Qualify RTS"
+    EDIFACTEquivalent: DTM /  2380
+    EDIFACTComment: "DTM / 2379 needs to qualify code 204 for YYYYMMDDHHMMSS, DTM / 2005 needs to qualify code 318 for Request Date"
+    notes: ""
+
+  - name: PricingCurrency
+    label: Pricing Currency
+    description: "ISO Currency Symbol for Pricing to be used throughout this Cat Request and in Supplier's Catalogue (unless specified by another subfield within the Line Items)"
+    type: fixedchar
+    size: 3
+    UBLEquivalent: cbc:PricingCurrencyCode 
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: CUR02
+    X12Comment: "Requires CUR01 to Qualify R6 for Requestor"
+    EDIFACTEquivalent: CUX / 6435
+    EDIFACTComment: "CUX / 6347 to qualify code 2 for Reference Ccy"
+    example: "USD"
+    notes: ""
+
+  - name: ValidityPeriodStart
+    label: Validity Period Start
+    description: "Start Date of the Quote Validity Period"
+    type: Timestamp
+    UBLEquivalent: cac:ValidityPeriod / cbc:StartDate
+    XMLSchema: xsd:date
+    X12Equivalent: 
+    X12Comment: 
+    EDIFACTEquivalent: DTM02
+    EDIFACTComment: "Either DTM gets used twice with DTM01 alternating b/w codes 098 (Effective Date) and 036 (Expiration date). Alternative is to use DTM06 w/ 1 DTM Header portion"
+
+  - name: ValidityPeriodEnd
+    label: Validity Period End
+    description: "End Date of the Quote Validity Period"
+    type: Timestamp
+    UBLEquivalent: cac:ValidityPeriod / cbc:EndDate
+    XMLSchema: xsd:date
+    X12Equivalent: 
+    X12Comment: 
+    EDIFACTEquivalent: DTM02
+    EDIFACTComment: "Either DTM gets used twice with DTM01 alternating b/w codes 098 (Effective Date) and 036 (Expiration date). Alternative is to use DTM06 w/ 1 DTM Header portion"
+
+  - name: RFQDocumentReferenceID
+    label: RFQ Document Reference ID
+    description: Ref ID of the RFQ this Quotation is responding to
+    type: varchar
+    size: 8
+    UBLEquivalent: cac:RequestForQuotationDocumentReference /  cbc:ID
+    XMLSchema: xsd:normalizedString
+    X12Equivalent:
+    EDIFACTEquivalent:
+    example: "348340131"
+
+  - name: RFQDocumentReferenceUUID
+    label: RFQ Document Reference UUID
+    description: UUID of the RFQ this Quotation is responding to
+    type: varchar
+    size: 8
+    UBLEquivalent: cac:RequestForQuotationDocumentReference /  cbc:UUID
+    XMLSchema: xsd:normalizedString
+    X12Equivalent:
+    EDIFACTEquivalent:
+    example: "RQ10385AK93J11"
+
+  - name: RFQDocumentReferenceIssueDate
+    label: RFQ Document Reference Issue Date
+    description: "Issue Date of the RFQ this Quotation is responding to"
+    type: Timestamp
+    UBLEquivalent: cac:RequestForQuotationDocumentReference /  cbc:IssueDate
+    XMLSchema: xsd:date
+    X12Equivalent: BQR05
+    X12Comment: Requires BQR04 to qualify 097 (Reference Creation Date)
+    EDIFACTEquivalent: 
+    EDIFACTComment: 
+
+  - name: Supplier
+    label: Supplier
+    description: "The Supplier entity"
+    type: Entity
+
+  - name: Buyer
+    label: Buyer
+    description: "The Recipient entity"
+    type: Entity
+
+  - name: DeliveryInformation
+    label: Delivery Information
+    description: "Supplier's proposed delivery terms"
+    type: DeliveryInformation
+
+BANKING DETAILS
+
+  - name: CatalogLineItems
+    label: Catalog Line Items
+    description: "An array of catalog items"
+    type: CatalogLineItem[]
+
+  - name: Note
+    label: Note
+    type: varchar
+    description: "Free Form Note accompanying the RFQ for any clarification purposes"
+    size: 32
+    UBLEquivalent: cbc:Note
+    XMLSchema: xsd:string
+    X12Equivalent: BCT09
+    X12Comment: "No clear X12 Data elements for Generic Notes in Catalogue/CatRequest - BCT09 approximately maps"
+    EDIFACTEquivalent: FTX / 4440
+    EDIFACTComment: "Requires DOC / 1001 to Qualify '9' for Price/Sales Catalogue"    
+    example: "Finished Furniture Goods in Stock Catalogue"
