@@ -1,13 +1,13 @@
 #
-# "Price/Sales Catalog Request
+# "Bill of Lading
 #
 
-code: E003
+code: E008
 
 metadata:
-  name: RequestForQuote
-  label: Request for Quote
-  description: "Used in general retail to obtain supplier item information and load to their Item master file  for new good, item updates or discontinued product notification"
+  name: Invoice
+  label: Invoice
+  description: "An invoice"
 
 fields:
   - name: Version
@@ -20,7 +20,7 @@ fields:
 
   - name: EDIDataType
     label: EDI Data Type
-    description: "Supported values: 1 - EDIFACT (REQOTE). 2 - X12 (840). 3 - UBL (RequestForQuotation)."
+    description: "Supported values: 1 - EDIFACT (QUOTES). 2 - X12 (  ). 3 - UBL (  )."
     type: uint
     size: 1
     int_values:
@@ -37,29 +37,28 @@ fields:
     size: 32
     UBLEquivalent: ext:UBLVersionID
     XMLSchema: xsd:normalizedString
-    X12Equivalent: BCT03
-    EDIFACTEquivalent: UNH / 0054
-    example: "2.3.3.A"
+    X12Equivalent: ST02
+    EDIFACTEquivalent:
+    example:
 
   - name: ProfileID
     label: Profile ID
     type: varchar
-    description: Catalogue Version Number
+    description: User Profile ID associated with this Submission
     size: 32
     UBLEquivalent: cbc:ProfileID
     XMLSchema: xsd:normalizedString
     X12Equivalent: 
     EDIFACTEquivalent:
-    example: "900000022"
 
   - name: ID
     label: ID
     type: varchar
-    description: RFQ ID Number assigned by Requestor
+    description: BL ID Number assigned by Originator / Seller / Forwarder
     size: 32
     UBLEquivalent: cbc:ID
     XMLSchema: xsd:normalizedString
-    X12Equivalent: BCT02
+    X12Equivalent: BIG02
     EDIFACTEquivalent:
 
   - name: CopyIndicator
@@ -69,58 +68,68 @@ fields:
     example_hex: 01
     UBLEquivalent: cbc:CopyIndicator
     XMLSchema: xsd:boolean
-    X12Equivalent: BCT10
+    X12Equivalent:
     EDIFACTEquivalent:
 
   - name: UUID
     label: Universally Unique Identifier
-    description: "Universal RFQ Reference # - 2 Char Prefix for doc type followed by randomly generated base58 string. Each UUID should be unique."
+    description: "Universal ID Reference # for BL"
     type: fixedchar
     size: 34
     UBLEquivalent: cbc:UUID
     XMLSchema: xsd:normalizedString
     X12Equivalent: 
     EDIFACTEquivalent:
-    example: "RQapm2qsznhks23z8d83u41s8019hyri3i"
-    notes: ""
 
   - name: IssuanceTimestamp
     label: Issuance Timestamp
-    description: "RFQ Issuance Timestamp YYYY-MM-DD HH:MM:SS Format (When the msg was created by the User)"
+    description: "BL Issuance Timestamp YYYY-MM-DD HH:MM:SS Format"
     type: Timestamp
     UBLEquivalent: cbc:IssueDate/cbc:IssueTime
     XMLSchema: xsd:date/xsd:time
-    X12Equivalent: DTM02
-    X12Comment: "DTM01 to qualify 007 & DTM05 to Qualify RTS"
-    EDIFACTEquivalent: DTM /  2380
-    EDIFACTComment: "DTM / 2379 needs to qualify code 204 for YYYYMMDDHHMMSS, DTM / 2005 needs to qualify code 318 for Request Date"
-    notes: ""
+    X12Equivalent: BIG03
+    X12Comment: "No Data Element to specify Time"
+    EDIFACTEquivalent: 
 
-  - name: SubmissionDate
-    label: Submission Date
-    description: "The due date for submission of the Quotation."
-    type: Timestamp
-    UBLEquivalent: cbc:SubmissionDueDate 
-    XMLSchema: xsd:date
-    X12Equivalent: BQT05
-    X12Comment: "Separate Loop of DTM to Issue Date, DTM01 to Qualify 036 & DTM05 to qualify D8 for YYYYMMDD format"
-    EDIFACTEquivalent: DTM / 2380
-    EDIFACTComment: "DTM / 2379 needs to qualify code 204 for YYYYMMDDHHMMSS, DTM / 2005 needs to qualify code 317 for Reply Date"
-    notes: ""
-
-  - name: PricingCurrency
-    label: Pricing Currency
-    description: "ISO Currency Symbol for Pricing to be used throughout this Cat Request and in Supplier's Catalogue (unless specified by another subfield within the Line Items)"
+  - name: Currency
+    label: Currency
+    description: "ISO Currency Symbol for Currency to be used throughout this Document"
     type: fixedchar
     size: 3
-    UBLEquivalent: cbc:PricingCurrencyCode 
+    UBLEquivalent: cbc:DocumentCurrencyCode 
     XMLSchema: xsd:normalizedString
     X12Equivalent: CUR02
-    X12Comment: "Requires CUR01 to Qualify R6 for Requestor"
-    EDIFACTEquivalent: CUX / 6435
-    EDIFACTComment: "CUX / 6347 to qualify code 2 for Reference Ccy"
-    example: "USD"
-    notes: ""
+    X12Comment: Requires CUR01 to Qualify either BY or SE (Denotes who is setting the currency for the Txn)
+    EDIFACTEquivalent: 
+
+  - name: InvoiceDocumentReferenceID
+    label: Invoice Document Reference ID
+    description: Ref ID of the main invoice this BL is related to. Additional invoices to be referenced in the Note section
+    type: varchar
+    size: 8
+    UBLEquivalent: cac:OrderReference /  cbc:ID
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: 
+    EDIFACTEquivalent:
+
+  - name: InvoiceDocumentReferenceUUID
+    label: Invoice Document Reference UUID
+    description: UUID of the Main Invoice this BL is related to (if single shipment covers multiple Invoices - comment in the Note section)
+    type: varchar
+    size: 8
+    UBLEquivalent: cac:OrderReference /  cbc:UUID
+    XMLSchema: xsd:normalizedString
+    X12Equivalent:
+    EDIFACTEquivalent:
+
+  - name: OrderDocumentReferenceIssueDate
+    label: Order Document Reference Issue Date
+    description: "Issue Date of the Order this BL is related to"
+    type: Timestamp
+    UBLEquivalent: cac:OrderReference /  cbc:IssueDate
+    XMLSchema: xsd:date
+    X12Equivalent: 
+    EDIFACTEquivalent: 
 
   - name: Supplier
     label: Supplier
@@ -131,6 +140,16 @@ fields:
     label: Buyer
     description: "The Recipient entity"
     type: Entity
+
+  - name: DeliveryInformation
+    label: Delivery Information
+    description: "Supplier's proposed delivery terms"
+    type: DeliveryInformation
+
+  - name: PaymentDetails
+    label: Payment Details
+    description: "Supplier's payment details"
+    type: PaymentDetails
 
   - name: CatalogLineItems
     label: Catalog Line Items

@@ -1,0 +1,180 @@
+#
+# "Invoice
+#
+
+code: E007
+
+metadata:
+  name: Invoice
+  label: Invoice
+  description: "An invoice"
+
+fields:
+  - name: Version
+    label: Version
+    type: uint 
+    description: Payload Version
+    size: 1
+    example: 0
+    computed: true
+
+  - name: EDIDataType
+    label: EDI Data Type
+    description: "Supported values: 1 - EDIFACT (QUOTES). 2 - X12 (  ). 3 - UBL (  )."
+    type: uint
+    size: 1
+    int_values:
+      - 1
+      - 2
+      - 3
+    example_hex: 01
+    example: "1"
+
+  - name: VersionID
+    label: Version ID
+    description: Version of Language
+    type: varchar
+    size: 32
+    UBLEquivalent: ext:UBLVersionID
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: ST02
+    EDIFACTEquivalent:
+    example:
+
+  - name: ProfileID
+    label: Profile ID
+    type: varchar
+    description: User Profile ID associated with this Submission
+    size: 32
+    UBLEquivalent: cbc:ProfileID
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: 
+    EDIFACTEquivalent:
+
+  - name: ID
+    label: ID
+    type: varchar
+    description: Invoice ID Number assigned by Seller
+    size: 32
+    UBLEquivalent: cbc:ID
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: BIG02
+    EDIFACTEquivalent:
+
+  - name: CopyIndicator
+    label: Copy Indicator
+    description: "UBL/EDIFACT: True (1) / False (0)."
+    type: bool
+    example_hex: 01
+    UBLEquivalent: cbc:CopyIndicator
+    XMLSchema: xsd:boolean
+    X12Equivalent:
+    EDIFACTEquivalent:
+
+  - name: UUID
+    label: Universally Unique Identifier
+    description: "Universal ID Reference # for Invoice"
+    type: fixedchar
+    size: 34
+    UBLEquivalent: cbc:UUID
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: 
+    EDIFACTEquivalent:
+
+  - name: IssuanceTimestamp
+    label: Issuance Timestamp
+    description: "Invoice Issuance Timestamp YYYY-MM-DD HH:MM:SS Format"
+    type: Timestamp
+    UBLEquivalent: cbc:IssueDate/cbc:IssueTime
+    XMLSchema: xsd:date/xsd:time
+    X12Equivalent: BIG03
+    X12Comment: "No Data Element to specify Time"
+    EDIFACTEquivalent: 
+
+  - name: Currency
+    label: Currency
+    description: "ISO Currency Symbol for Currency to be used throughout this Document"
+    type: fixedchar
+    size: 3
+    UBLEquivalent: cbc:DocumentCurrencyCode 
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: CUR02
+    X12Comment: Requires CUR01 to Qualify either BY or SE (Denotes who is setting the currency for the Txn)
+    EDIFACTEquivalent: 
+
+  - name: Order Document Reference ID
+    label: Order Document Reference ID
+    description: Ref ID of the Order this Invoice is related to
+    type: varchar
+    size: 8
+    UBLEquivalent: cac:OrderReference /  cbc:ID
+    XMLSchema: xsd:normalizedString
+    X12Equivalent: 
+    EDIFACTEquivalent:
+
+  - name: OrderDocumentReferenceUUID
+    label: Order Document Reference UUID
+    description: UUID of the Order this Invoice is related to
+    type: varchar
+    size: 8
+    UBLEquivalent: cac:OrderReference /  cbc:UUID
+    XMLSchema: xsd:normalizedString
+    X12Equivalent:
+    EDIFACTEquivalent:
+
+  - name: OrderDocumentReferenceIssueDate
+    label: Order Document Reference Issue Date
+    description: "Issue Date of the Quote this Invoice is related to"
+    type: Timestamp
+    UBLEquivalent: cac:OrderReference /  cbc:IssueDate
+    XMLSchema: xsd:date
+    X12Equivalent: 
+    EDIFACTEquivalent: 
+
+  - name: SignatoryParty
+    label: Signatory Party
+    description: Authorized Signatory of the Seller (Signed or Co-sign this Message)
+    type: varchar
+    size: 8
+    UBLEquivalent: cac:Signature / cac:SignatoryParty / cac:PartyName
+    XMLSchema: xsd:string
+    X12Equivalent:
+    EDIFACTEquivalent:
+
+  - name: Supplier
+    label: Supplier
+    description: "The Supplier entity"
+    type: Entity
+
+  - name: Buyer
+    label: Buyer
+    description: "The Recipient entity"
+    type: Entity
+
+  - name: DeliveryInformation
+    label: Delivery Information
+    description: "Supplier's proposed delivery terms"
+    type: DeliveryInformation
+
+  - name: PaymentDetails
+    label: Payment Details
+    description: "Supplier's payment details"
+    type: PaymentDetails
+
+  - name: CatalogLineItems
+    label: Catalog Line Items
+    description: "An array of catalog items"
+    type: CatalogLineItem[]
+
+  - name: Note
+    label: Note
+    type: varchar
+    description: "Free Form Note accompanying the RFQ for any clarification purposes"
+    size: 32
+    UBLEquivalent: cbc:Note
+    XMLSchema: xsd:string
+    X12Equivalent: BCT09
+    X12Comment: "No clear X12 Data elements for Generic Notes in Catalogue/CatRequest - BCT09 approximately maps"
+    EDIFACTEquivalent: FTX / 4440
+    EDIFACTComment: "Requires DOC / 1001 to Qualify '9' for Price/Sales Catalogue"    
+    example: "Finished Furniture Goods in Stock Catalogue"

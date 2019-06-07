@@ -2,12 +2,12 @@
 # "Price/Sales Catalog Request
 #
 
-code: E004
+code: E005
 
 metadata:
-  name: RequestForQuote
-  label: Request for Quote
-  description: "Used in general retail to deliver supplier item information and Pricing"
+  name: PurchaseOrder
+  label: Purchase Order
+  description: "Used to place an order"
 
 fields:
   - name: Version
@@ -37,10 +37,9 @@ fields:
     size: 32
     UBLEquivalent: ext:UBLVersionID
     XMLSchema: xsd:normalizedString
-    X12Equivalent: BCT03
-    EDIFACTEquivalent: UNH / 0054
-    example: "2.3.3.A"
-
+    X12Equivalent: ST02
+    EDIFACTEquivalent: 
+        
   - name: ProfileID
     label: Profile ID
     type: varchar
@@ -50,18 +49,17 @@ fields:
     XMLSchema: xsd:normalizedString
     X12Equivalent: 
     EDIFACTEquivalent:
-    example: "900000022"
 
   - name: ID
     label: ID
     type: varchar
-    description: Quote ID Number assigned by Seller
+    description: Catalogue Request ID Number assigned by Requestor
     size: 32
     UBLEquivalent: cbc:ID
     XMLSchema: xsd:normalizedString
-    X12Equivalent: BCT02
+    X12Equivalent: BEG03
+    X12Comment: Requires BEG02 to qualify what kind of PO it is
     EDIFACTEquivalent:
-    example: "900000022"
 
   - name: CopyIndicator
     label: Copy Indicator
@@ -70,22 +68,18 @@ fields:
     example_hex: 01
     UBLEquivalent: cbc:CopyIndicator
     XMLSchema: xsd:boolean
-    X12Equivalent: BCT10
-    X12Comment:
+    X12Equivalent:
     EDIFACTEquivalent:
-    example: "00"
 
   - name: UUID
     label: Universally Unique Identifier
-    description: "Universal Quote Reference # - Randomly generated base58 string."
+    description: "Universal Order Reference # - Randomly generated base58 string."
     type: fixedchar
     size: 34
     UBLEquivalent: cbc:UUID
     XMLSchema: xsd:normalizedString
     X12Equivalent: 
     EDIFACTEquivalent:
-    example: "RQapm2qsznhks23z8d83u41s8019hyri3i"
-    notes: ""
 
   - name: IssuanceTimestamp
     label: Issuance Timestamp
@@ -93,25 +87,21 @@ fields:
     type: Timestamp
     UBLEquivalent: cbc:IssueDate/cbc:IssueTime
     XMLSchema: xsd:date/xsd:time
-    X12Equivalent: DTM02
-    X12Comment: "DTM01 to qualify 007 & DTM05 to Qualify RTS"
-    EDIFACTEquivalent: DTM /  2380
-    EDIFACTComment: "DTM / 2379 needs to qualify code 204 for YYYYMMDDHHMMSS, DTM / 2005 needs to qualify code 318 for Request Date"
-    notes: ""
+    X12Equivalent: BQR03
+    X12Comment: "No Data Element to specify Time"
+    EDIFACTEquivalent: 
 
-  - name: PricingCurrency
-    label: Pricing Currency
-    description: "ISO Currency Symbol for Pricing to be used throughout this Cat Request and in Supplier's Catalogue (unless specified by another subfield within the Line Items)"
+  - name: DocumentCurrency
+    label: Document Currency
+    description: "Default ISO Currency Symbol to be used throughout this Order unless specified otherwise inside Line Items"
     type: fixedchar
     size: 3
-    UBLEquivalent: cbc:PricingCurrencyCode 
+    UBLEquivalent: cbc:DocumentCurrencyCode 
     XMLSchema: xsd:normalizedString
     X12Equivalent: CUR02
-    X12Comment: "Requires CUR01 to Qualify R6 for Requestor"
-    EDIFACTEquivalent: CUX / 6435
-    EDIFACTComment: "CUX / 6347 to qualify code 2 for Reference Ccy"
-    example: "USD"
-    notes: ""
+    X12Comment: Requires CUR01 to Qualify either BY or SE (Denotes who is setting the currency for the Txn)
+    EDIFACTEquivalent: 
+    EDIFACTComment:
 
   - name: ValidityPeriodStart
     label: Validity Period Start
@@ -135,38 +125,37 @@ fields:
     EDIFACTEquivalent: DTM02
     EDIFACTComment: "Either DTM gets used twice with DTM01 alternating b/w codes 098 (Effective Date) and 036 (Expiration date). Alternative is to use DTM06 w/ 1 DTM Header portion"
 
-  - name: RFQDocumentReferenceID
-    label: RFQ Document Reference ID
-    description: Ref ID of the RFQ this Quotation is responding to
+  - name: QuoteDocumentReferenceID
+    label: Quote Document Reference ID
+    description: Ref ID of the Quote this Order is related to
     type: varchar
     size: 8
-    UBLEquivalent: cac:RequestForQuotationDocumentReference /  cbc:ID
+    UBLEquivalent: cac:QuotationDocumentReference /  cbc:ID
     XMLSchema: xsd:normalizedString
-    X12Equivalent:
+    X12Equivalent: REF02
+    X12Comment: Requires REF01 to qualify DQ or PQ (Delivery Quote or Price Quote references)
     EDIFACTEquivalent:
     example: "348340131"
 
-  - name: RFQDocumentReferenceUUID
-    label: RFQ Document Reference UUID
-    description: UUID of the RFQ this Quotation is responding to
+  - name: QuoteDocumentReferenceUUID
+    label: Quote Document Reference UUID
+    description: UUID of the Quote this Order is related to
     type: varchar
     size: 8
-    UBLEquivalent: cac:RequestForQuotationDocumentReference /  cbc:UUID
+    UBLEquivalent: cac:QuotationDocumentReference /  cbc:UUID
     XMLSchema: xsd:normalizedString
     X12Equivalent:
     EDIFACTEquivalent:
-    example: "RQ10385AK93J11"
 
-  - name: RFQDocumentReferenceIssueDate
-    label: RFQ Document Reference Issue Date
-    description: "Issue Date of the RFQ this Quotation is responding to"
+  - name: QuoteDocumentReferenceIssueDate
+    label: Quote Document Reference Issue Date
+    description: "Issue Date of the Quote this Order is related to"
     type: Timestamp
-    UBLEquivalent: cac:RequestForQuotationDocumentReference /  cbc:IssueDate
+    UBLEquivalent: cac:QuotationDocumentReference /  cbc:IssueDate
     XMLSchema: xsd:date
-    X12Equivalent: BQR05
-    X12Comment: Requires BQR04 to qualify 097 (Reference Creation Date)
+    X12Equivalent: REF03
+    X12Comment: Issue Date of the Reference Quote needs to be in the Free-form description Data Element from REF (no Date-related Data elements in there)
     EDIFACTEquivalent: 
-    EDIFACTComment: 
 
   - name: Supplier
     label: Supplier

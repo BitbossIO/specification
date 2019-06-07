@@ -9,7 +9,7 @@ fields:
     description: "Idenfication Number for the proceeding Line Item"
     type: varchar
     size: 32
-    UBLEquivalent: cac:CatalogueLine / cbc:ID
+    UBLEquivalent: cbc:ID
     XMLSchema: xsd:string
     X12Equivalent: 
     EDIFACTEquivalent:
@@ -19,7 +19,7 @@ fields:
     description: "Free Form Name of Line Item"
     type: varchar
     size: 32
-    UBLEquivalent: cac:CatalogueLine |cbc:ID 1 | cac:Item / cbc:Name
+    UBLEquivalent: cac:Item / cbc:Name
     XMLSchema: xsd:string
     X12Equivalent: LIN03
     X12Comment: Requires LIN02 to Qualify GE for General Name
@@ -30,7 +30,7 @@ fields:
     description: "ANSI / ISO standard (UN = Units, MTR = Metres)"
     type: varchar
     size: 32
-    UBLEquivalent: cac:CatalogueLine |cbc:ID 1 |  cac:Item / cct:MeasureType
+    UBLEquivalent: cac:Item / cct:MeasureType
     XMLSchema: xsd:normalisedString
     X12Equivalent: C00101
     X12Comment: Units Codes = http://ecomgx17.ecomtoday.com/edi/EDI_4010/el355.htm
@@ -41,7 +41,7 @@ fields:
     description: "Minimum Number of Units of Line Item 1"
     type: Float
     size: 32
-    UBLEquivalent: cac:CatalogueLine |cbc:ID 1 |  cbc:MinimumOrderQuantity 
+    UBLEquivalent:  cbc:MinimumOrderQuantity 
     XMLSchema: xsd:decimal
     X12Equivalent: CTB04
     X12Comment: CTB01 to Qualify OR for Ordering, CTB03 to Qualify 57 for Minimum Order 
@@ -52,18 +52,30 @@ fields:
     description: "Maximum Number of Units of Line Item 1"
     type: Float
     size: 32
-    UBLEquivalent: cac:CatalogueLine |cbc:ID 1 |  cbc:MaximumOrderQuantity 
+    UBLEquivalent:  cbc:MaximumOrderQuantity 
     XMLSchema: xsd:decimal
     X12Equivalent: CTB04
     X12Comment: CTB01 to Qualify OR for Ordering, CTB03 to Qualify 57 for Maximum Order 
     EDIFACTEquivalent: LIN / 
+
+  - name: Quantity
+    label: Quantity
+    description: "Number of Units of Line Item"
+    type: Float
+    size: 32
+    UBLEquivalent: cac:QuotationLine | cac:LineItem / cbc:Quantity 
+    XMLSchema: xsd:decimal
+    X12Equivalent: CTB04
+    X12Comment: CTB01 to Qualify OR for Ordering, CTB03 to Qualify 57 for Maximum Order 
+    EDIFACTEquivalent: LIN / 
+    include_if_true: E004
 
   - name: BaseCurrency
     label: Base Currency
     description: "3 Letter ISO Currency Code"
     type: fixedchar
     size: 3
-    UBLEquivalent: cac:CatalogueLine |cbc:ID 1 | cac:RequiredItemLocationQuantity / cac:Price / cac:PricingExchangeRate / cbc:SourceCurrencyCode
+    UBLEquivalent: cac:RequiredItemLocationQuantity / cac:Price / cac:PricingExchangeRate / cbc:SourceCurrencyCode
     XMLSchema: xsd:string
     X12Equivalent: CUR02
     X12Comment: "Requires CUR01 to Qualify R6 for Requestor"
@@ -76,7 +88,7 @@ fields:
     description: "3 Letter ISO Currency Code"
     type: fixedchar
     size: 3
-    UBLEquivalent: cac:CatalogueLine |cbc:ID 1 | cac:RequiredItemLocationQuantity / cac:Price / cac:PricingExchangeRate / cbc:TargetCurrencyCode
+    UBLEquivalent: cac:RequiredItemLocationQuantity / cac:Price / cac:PricingExchangeRate / cbc:TargetCurrencyCode
     XMLSchema: xsd:string
     X12Equivalent: CUR02
     X12Comment: "Requires CUR01 to Qualify R6 for Requestor"
@@ -89,7 +101,7 @@ fields:
     description: "FX Rate according to Currency Hierarchy"
     type: Float
     size: 32
-    UBLEquivalent: cac:CatalogueLine |cbc:ID 1 | cac:RequiredItemLocationQuantity / cac:Price / cac:PricingExchangeRate / cbc:CalculationRate
+    UBLEquivalent: cac:RequiredItemLocationQuantity / cac:Price / cac:PricingExchangeRate / cbc:CalculationRate
     XMLSchema: xsd:decimal
     X12Equivalent: CUR03
     X12Comment: Rate is ALWAYS used as a multiplier in X12- Therefore correct FX rate direction is critical
@@ -105,7 +117,7 @@ fields:
     description: "Free Form description of Line Item"
     type: varchar
     size: 32
-    UBLEquivalent: cac:CatalogueLine |cbc:ID 1 |  cac:LineItem / cac:Item / cbc
+    UBLEquivalent:  cac:LineItem / cac:Item / cbc
     XMLSchema: xsd:string
     X12Equivalent: PID05
     X12Comment: Requires PID01 to qualify F (Free-form)
@@ -116,7 +128,7 @@ fields:
     description: "ID number of Line Item from Seller's Catalogue"
     type: varchar
     size: 8
-    UBLEquivalent: cac:CatalogueLine |cbc:ID 1 | cac:LineItem / cac:Item /  cac:SellersItemIdentification 
+    UBLEquivalent: cac:LineItem / cac:Item /  cac:SellersItemIdentification 
     XMLSchema: xsd:normalizedString
     X12Equivalent: LIN05
     X12Comment: LIN04 to qualify VC for Vendor's Catalogue
